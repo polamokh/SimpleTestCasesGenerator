@@ -38,7 +38,7 @@ namespace SimpleTestcasesGenerator
                 var item = dataGridViewVariables.Rows[i];
                 if (item.Cells[1].Value != null)
                 {
-                    if (item.Cells[1].Visible.ToString() != "")
+                    if (item.Cells[1].Value.ToString() != "")
                         variables.Find(x => x.Name == item.Cells[0].Value.ToString()).AssignmentVariable =
                                 item.Cells[1].Value.ToString();
                 }
