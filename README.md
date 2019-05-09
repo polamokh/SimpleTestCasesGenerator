@@ -1,12 +1,16 @@
 # Simple Testcases Generator
 It's convert the pseudo code to C# code and run some test cases on this code.
 
-Testcases are not generated yet.
+Test Cases generated but not tested well.
 
 Not Supported (Keywords):
 - Print
 - For
 - Do While
+
+Not Supported:
+- Nested Conditions
+- Nested Loops
 
 ## You can test this samples
 ###### First

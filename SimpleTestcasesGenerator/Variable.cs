@@ -12,6 +12,8 @@ namespace SimpleTestcasesGenerator
         string assignmentVariable;
         bool isReturnValue;
 
+        public Variable() { }
+
         public Variable(string _name, string _assignemntVariable)
         {
             name = _name; assignmentVariable = _assignemntVariable; IsReturnValue = false;

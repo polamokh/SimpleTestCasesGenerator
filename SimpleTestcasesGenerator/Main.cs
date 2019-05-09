@@ -16,6 +16,7 @@ namespace SimpleTestcasesGenerator
         public Main()
         {
             InitializeComponent();
+            radioButtonAuto.Checked = true;
         }
 
         List<Variable> variables;
@@ -47,12 +48,16 @@ namespace SimpleTestcasesGenerator
             }
 
             conditions = PseudoCodeAnalysis.GetConditions(txt_pseudoCode.Text);
-            txt_convertedCode.Text = PseudoCodeAnalysis.GenerateCSharpCode(variables, conditions);
+            if (radioButtonAuto.Checked)
+                txt_convertedCode.Text = PseudoCodeAnalysis.GenerateCSharpCode(variables, conditions, true);
+            else
+                txt_convertedCode.Text = PseudoCodeAnalysis.GenerateCSharpCode(variables, conditions, false);
         }
 
         private void btn_run_Click(object sender, EventArgs e)
         {
-            string result = PseudoCodeAnalysis.CompileCode(variables, conditions);
+            string result = PseudoCodeAnalysis.CompileCode(txt_convertedCode.Text);
+
             txt_outputErrors.Text = result;
             if (result == "Code Compiled Successfully.")
             {

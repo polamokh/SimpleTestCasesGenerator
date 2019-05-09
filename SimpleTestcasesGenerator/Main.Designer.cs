@@ -45,6 +45,9 @@
             this.btn_run = new System.Windows.Forms.Button();
             this.btn_generateCode = new System.Windows.Forms.Button();
             this.btn_codeAnalysis = new System.Windows.Forms.Button();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.radioButtonUser = new System.Windows.Forms.RadioButton();
+            this.radioButtonAuto = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -54,6 +57,7 @@
             this.groupBoxVariables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewVariables)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -130,6 +134,7 @@
             this.txt_convertedCode.Location = new System.Drawing.Point(3, 16);
             this.txt_convertedCode.Multiline = true;
             this.txt_convertedCode.Name = "txt_convertedCode";
+            this.txt_convertedCode.ReadOnly = true;
             this.txt_convertedCode.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txt_convertedCode.Size = new System.Drawing.Size(386, 109);
             this.txt_convertedCode.TabIndex = 1;
@@ -160,14 +165,16 @@
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.groupBoxVariables, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.groupBoxVariables, 0, 2);
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel5, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(407, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowCount = 3;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 75F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(399, 448);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
@@ -175,9 +182,9 @@
             // 
             this.groupBoxVariables.Controls.Add(this.dataGridViewVariables);
             this.groupBoxVariables.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxVariables.Location = new System.Drawing.Point(3, 70);
+            this.groupBoxVariables.Location = new System.Drawing.Point(3, 114);
             this.groupBoxVariables.Name = "groupBoxVariables";
-            this.groupBoxVariables.Size = new System.Drawing.Size(393, 375);
+            this.groupBoxVariables.Size = new System.Drawing.Size(393, 331);
             this.groupBoxVariables.TabIndex = 0;
             this.groupBoxVariables.TabStop = false;
             this.groupBoxVariables.Text = "Variables";
@@ -199,7 +206,7 @@
             this.dataGridViewVariables.RowHeadersVisible = false;
             this.dataGridViewVariables.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             this.dataGridViewVariables.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewVariables.Size = new System.Drawing.Size(387, 356);
+            this.dataGridViewVariables.Size = new System.Drawing.Size(387, 312);
             this.dataGridViewVariables.TabIndex = 0;
             // 
             // Column1
@@ -223,7 +230,7 @@
             this.tableLayoutPanel4.Controls.Add(this.btn_generateCode, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.btn_codeAnalysis, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 47);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -263,6 +270,45 @@
             this.btn_codeAnalysis.UseVisualStyleBackColor = true;
             this.btn_codeAnalysis.Click += new System.EventHandler(this.btn_codeAnalysis_Click);
             // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 2;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.Controls.Add(this.radioButtonUser, 1, 0);
+            this.tableLayoutPanel5.Controls.Add(this.radioButtonAuto, 0, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(393, 38);
+            this.tableLayoutPanel5.TabIndex = 3;
+            // 
+            // radioButtonUser
+            // 
+            this.radioButtonUser.AutoSize = true;
+            this.radioButtonUser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radioButtonUser.Location = new System.Drawing.Point(199, 3);
+            this.radioButtonUser.Name = "radioButtonUser";
+            this.radioButtonUser.Size = new System.Drawing.Size(191, 32);
+            this.radioButtonUser.TabIndex = 1;
+            this.radioButtonUser.TabStop = true;
+            this.radioButtonUser.Text = "User Input Test Case";
+            this.radioButtonUser.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonAuto
+            // 
+            this.radioButtonAuto.AutoSize = true;
+            this.radioButtonAuto.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radioButtonAuto.Location = new System.Drawing.Point(3, 3);
+            this.radioButtonAuto.Name = "radioButtonAuto";
+            this.radioButtonAuto.Size = new System.Drawing.Size(190, 32);
+            this.radioButtonAuto.TabIndex = 0;
+            this.radioButtonAuto.TabStop = true;
+            this.radioButtonAuto.Text = "Auto Generated Test Cases";
+            this.radioButtonAuto.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -283,6 +329,8 @@
             this.groupBoxVariables.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewVariables)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -306,5 +354,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.RadioButton radioButtonUser;
+        private System.Windows.Forms.RadioButton radioButtonAuto;
     }
 }

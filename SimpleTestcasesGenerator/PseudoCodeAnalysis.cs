@@ -15,6 +15,7 @@ namespace SimpleTestcasesGenerator
         static public List<Variable> GetVariables(string code)
         {
             List<Variable> variables = new List<Variable>();
+            Variable returnVariable = new Variable();
 
             string[] lines = code.Split('\n');
             for (int i = 0; i < lines.Length; i++)
@@ -33,7 +34,7 @@ namespace SimpleTestcasesGenerator
                 else if (lines[i].ToLower().Contains("read") ||
                     lines[i].ToLower().Contains("get") ||
                     lines[i].ToLower().Contains("input") ||
-                    lines[i].ToLower().Contains("accept")) //Get all declared variables
+                    lines[i].ToLower().Contains("accept"))
                 {
                     string[] declareLine = lines[i].Split(' ');
                     if (lines[i].Contains(','))
@@ -57,12 +58,9 @@ namespace SimpleTestcasesGenerator
                         if (!variables.Exists(x => x.Name == declareLine[1].Trim()))
                             variables.Add(new Variable(declareLine[1].Trim(), null));
                     }
-                }  //------------------------------------------------------------------
+                }
                 else if (lines[i].Contains('='))
                 {
-                    //if (lines[i].ToLower().Contains("set"))
-                    //    lines[i] = lines[i].ToLower().Replace("set ", string.Empty);
-
                     string[] assignmentVariables = lines[i].Split('=');
                     if (!variables.Exists(x => x.Name == assignmentVariables[0].Trim()))
                         variables.Add(new Variable(assignmentVariables[0].Trim(), assignmentVariables[1].Trim()));
@@ -73,9 +71,12 @@ namespace SimpleTestcasesGenerator
                 else if (lines[i].ToLower().Contains("return"))
                 {
                     string[] returnValue = lines[i].Split(' ');
-                    variables.Find(x => x.Name == returnValue[1].Trim()).IsReturnValue = true;
+                    returnVariable = variables.Find(x => x.Name == returnValue[1].Trim());
+                    variables.Remove(returnVariable);
                 }
             }
+            returnVariable.IsReturnValue = true;
+            variables.Add(returnVariable);
 
             return variables;
         }
@@ -97,9 +98,9 @@ namespace SimpleTestcasesGenerator
                     for (int j = i + 1; j < lines.Length; j++)
                         if (!lines[j].ToLower().Contains("endif") && !lines[j].ToLower().Contains("endwhile"))
                             if (!lines[j].ToLower().Contains("else"))
-                                condition.Body += lines[j] + ';';
+                                condition.Body += lines[j] + ";\r\n";
                             else
-                                condition.Body += '}' + lines[j].ToLower() + '{';
+                                condition.Body += "}\r\n" + lines[j].ToLower() + " {\r\n";
                         else
                             break;
 
@@ -109,32 +110,109 @@ namespace SimpleTestcasesGenerator
             return conditions;
         }
 
-        static public string GenerateCSharpCode(List<Variable> variables, List<Condition> conditions)
+        static public string GenerateCSharpCode(List<Variable> variables, List<Condition> conditions, bool isAutoTestcases)
         {
             string generatedCode = "using System;\r\n" +
                     "namespace TestApp {\r\n" +
                     "class TestAppClass {\r\n" +
-                    "static void Main(string[] args) { Console.Write(TestFunc()); Console.Read(); }\r\n" +
-                    "static int TestFunc() {\r\n";
-
-            for (int i = 0; i < variables.Count; i++)
+                    "static void Main(string[] args) {\r\n";
+            if (isAutoTestcases)
             {
-                if (variables[i].AssignmentVariable == null)
-                    generatedCode += "int " + variables[i].Name + ";\r\n";
-                else
-                    generatedCode += "int " + variables[i].Name + '=' + variables[i].AssignmentVariable + ";\r\n";
+                double numOfTestcases = Math.Pow(3, variables.Count - 1);
+                for (int i = 0; i < numOfTestcases; i++)
+                    generatedCode += "Console.WriteLine(TestFunc" + i + "());\r\n";
+            }
+            else
+                generatedCode += "Console.WriteLine(TestFunc());\r\n";
+            generatedCode += "Console.Read();\r\n" +
+                    "}\r\n";
+
+            if (isAutoTestcases)
+            {
+                int numOfVariables = variables.Count - 1;
+                int numOfTestcases = Convert.ToInt32(Math.Pow(3, variables.Count - 1));
+
+                int[,] testcasesTable = new int[numOfTestcases, numOfVariables];
+                int tmp = numOfTestcases;
+                for (int i = 0; i < numOfVariables; i++)
+                {
+                    int prob = 0;
+                    Random rand = new Random();
+                    tmp /= 3;
+                    for (int j = 0; j < numOfTestcases; j++)
+                    {
+                        int value = 0;
+                        if (prob == 1)
+                            value = rand.Next(1, 10000);
+                        else if (prob == 2)
+                            value = rand.Next(-9999, 0);
+
+                        testcasesTable[j, i] = value;
+
+                        if ((j + 1) % tmp == 0)
+                            prob++;
+
+                        if (prob > 2)
+                            prob = 0;
+                    }
+                }
+
+                for (int i = 0; i < numOfTestcases; i++)
+                {
+                    generatedCode += "static int TestFunc" + i + "() {\r\n";
+                    for (int j = 0; j < variables.Count; j++)
+                    {
+                        if (!variables[j].IsReturnValue)
+                        {
+                            generatedCode += "int " + variables[j].Name + '=' + testcasesTable[i, j] + ";\r\n";
+                        }
+                        else
+                        {
+                            if (variables[j].AssignmentVariable == null)
+                                generatedCode += "int " + variables[j].Name + ";\r\n";
+                            else
+                                generatedCode += "int " + variables[j].Name + '=' + variables[j].AssignmentVariable + ";\r\n";
+                        }
+                    }
+
+                    for (int k = 0; k < conditions.Count; k++)
+                    {
+                        generatedCode += conditions[k].Type + " (" + conditions[k].Left + ' ' + conditions[k].Opera + ' ' +
+                            conditions[k].Right + ") {\r\n" + conditions[k].Body + "}\r\n";
+                    }
+
+                    generatedCode += "return " + variables.Find(x => x.IsReturnValue).Name + ";\r\n" +
+                        "}\r\n";
+                }
+            }
+            else
+            {
+                generatedCode += "static int TestFunc() {\r\n";
+
+                for (int i = 0; i < variables.Count; i++)
+                {
+                    if (variables[i].AssignmentVariable == null)
+                        generatedCode += "int " + variables[i].Name + ";\r\n";
+                    else
+                        generatedCode += "int " + variables[i].Name + '=' + variables[i].AssignmentVariable + ";\r\n";
+                }
+
+                for (int i = 0; i < conditions.Count; i++)
+                {
+                    generatedCode += conditions[i].Type + " (" + conditions[i].Left + ' ' + conditions[i].Opera + ' ' +
+                        conditions[i].Right + ") {\r\n" + conditions[i].Body + "}\r\n";
+                }
+
+                generatedCode += "return " + variables.Find(x => x.IsReturnValue).Name + ";\r\n" +
+                    "}\r\n";
             }
 
-            for (int i = 0; i < conditions.Count; i++)
-            {
-                generatedCode += conditions[i].Type + " (" + conditions[i].Left + ' ' + conditions[i].Opera + ' ' +
-                    conditions[i].Right + ") {\r\n" + conditions[i].Body + "}\r\n";
-            }
-
-            return generatedCode + "return " + variables.Find(x => x.IsReturnValue).Name + "; } } }";
+            return generatedCode +
+                "}\r\n" +
+                "}";
         }
 
-        static public string CompileCode(List<Variable> variables, List<Condition> conditions)
+        static public string CompileCode(string cSharpCode)
         {
             string code = "";
             string outputMsg = "";
@@ -147,7 +225,7 @@ namespace SimpleTestcasesGenerator
             parameters.GenerateExecutable = true;
             parameters.OutputAssembly = Output;
 
-            code = GenerateCSharpCode(variables, conditions);
+            code = cSharpCode;
 
             CompilerResults results = icc.CompileAssemblyFromSource(parameters, code);
 
