@@ -1,4 +1,4 @@
-# Simple Testcases Generator
+# Simple Test Cases Generator
 It's convert the pseudo code to C# code and run some test cases on this code.
 
 Test Cases generated but not tested well.
