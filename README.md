@@ -3,7 +3,7 @@ It's convert the pseudo code to C# code and run some test cases on this code.
 
 - [x] Convert Pseudo Code to C# Code.
 - [x] Generate Test Cases.
-- [x] Foramt Output Results.
+- [x] Format Output Results.
 
 ### Not Supported:
 - Nested Conditions
