@@ -1,9 +1,11 @@
 # Simple Test Cases Generator
 It's convert the pseudo code to C# code and run some test cases on this code.
 
-Test Cases generated but not tested well.
+- [x] Convert Pseudo Code to C# Code.
+- [x] Generate Test Cases.
+- [x] Foramt Output Results.
 
-Not Supported:
+### Not Supported:
 - Nested Conditions
 - Nested Loops
 - Keywords
@@ -11,8 +13,23 @@ Not Supported:
   - For
   - Do While
 
-## You can test this samples
-###### First
+## You Can Test This Samples
+###### 1.1
+```
+READ x, y, z
+z = x/y
+RETURN z
+```
+###### 1.2
+```
+READ x, y, z
+IF (y != 0)
+z = x/y
+ENDIF
+RETURN z
+```
+
+###### 2
 ```
 READ num1, num2, result
 IF num1 > num2
@@ -23,7 +40,7 @@ ENDIF
 RETURN result
 ```
 
-###### Second
+###### 3
 ```
 READ num1, res, i
 num1 = 1
