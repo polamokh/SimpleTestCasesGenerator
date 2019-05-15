@@ -120,12 +120,12 @@ namespace SimpleTestcasesGenerator
             {
                 double numOfTestcases = Math.Pow(3, variables.Count - 1);
                 for (int i = 0; i < numOfTestcases; i++)
-                    generatedCode += "Console.WriteLine(TestFunc" + i + "());\r\n";
+                    generatedCode += "Console.WriteLine(\"So, Output is \"+TestFunc" + i + "()); " +
+                        "Console.WriteLine();\r\n";
             }
             else
-                generatedCode += "Console.WriteLine(TestFunc());\r\n";
-            generatedCode += "Console.Read();\r\n" +
-                    "}\r\n";
+                generatedCode += "Console.WriteLine(\"So, Output is \"+TestFunc());\r\n";
+            generatedCode += "}\r\n";
 
             if (isAutoTestcases)
             {
@@ -134,10 +134,10 @@ namespace SimpleTestcasesGenerator
 
                 int[,] testcasesTable = new int[numOfTestcases, numOfVariables];
                 int tmp = numOfTestcases;
+                Random rand = new Random();
                 for (int i = 0; i < numOfVariables; i++)
                 {
                     int prob = 0;
-                    Random rand = new Random();
                     tmp /= 3;
                     for (int j = 0; j < numOfTestcases; j++)
                     {
@@ -160,11 +160,18 @@ namespace SimpleTestcasesGenerator
                 for (int i = 0; i < numOfTestcases; i++)
                 {
                     generatedCode += "static int TestFunc" + i + "() {\r\n";
+                    generatedCode += "Console.Write(" + "\"If Input is \"" + ");\r\n";
                     for (int j = 0; j < variables.Count; j++)
                     {
                         if (!variables[j].IsReturnValue)
                         {
                             generatedCode += "int " + variables[j].Name + '=' + testcasesTable[i, j] + ";\r\n";
+                            if (j + 2 == variables.Count)
+                                generatedCode += "Console.WriteLine(" + '"' + variables[j].Name + "\"+" + "\"=\"+" +
+                                '"' + testcasesTable[i, j] + "\");\r\n";
+                            else
+                                generatedCode += "Console.Write(" + '"' + variables[j].Name + "\"+" + "\"=\"+" +
+                                '"' + testcasesTable[i, j] + "\"+\", \");\r\n";
                         }
                         else
                         {
@@ -188,13 +195,25 @@ namespace SimpleTestcasesGenerator
             else
             {
                 generatedCode += "static int TestFunc() {\r\n";
+                generatedCode += "Console.Write(" + "\"If Input is \"" + ");\r\n";
 
                 for (int i = 0; i < variables.Count; i++)
                 {
                     if (variables[i].AssignmentVariable == null)
                         generatedCode += "int " + variables[i].Name + ";\r\n";
                     else
+                    {
                         generatedCode += "int " + variables[i].Name + '=' + variables[i].AssignmentVariable + ";\r\n";
+                        if (!variables[i].IsReturnValue)
+                        {
+                            if (i + 2 == variables.Count)
+                                generatedCode += "Console.WriteLine(" + '"' + variables[i].Name + "\"+" + "\"=\"+" +
+                                '"' + variables[i].AssignmentVariable + "\");\r\n";
+                            else
+                                generatedCode += "Console.Write(" + '"' + variables[i].Name + "\"+" + "\"=\"+" +
+                                '"' + variables[i].AssignmentVariable + "\"+\", \");\r\n";
+                        }
+                    }
                 }
 
                 for (int i = 0; i < conditions.Count; i++)

@@ -56,13 +56,15 @@ namespace SimpleTestcasesGenerator
 
         private void btn_run_Click(object sender, EventArgs e)
         {
+            consoleControl.ClearOutput();
             string result = PseudoCodeAnalysis.CompileCode(txt_convertedCode.Text);
 
             txt_outputErrors.Text = result;
             if (result == "Code Compiled Successfully.")
             {
                 txt_outputErrors.ForeColor = Color.LimeGreen;
-                Process.Start("CompiledApp.exe");
+                //Process.Start("CompiledApp.exe");
+                consoleControl.StartProcess("CompiledApp.exe", "");
             }
             else
             {
